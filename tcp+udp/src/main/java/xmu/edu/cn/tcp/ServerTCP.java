@@ -1,4 +1,4 @@
-package xmu.edu.cn;
+package xmu.edu.cn.tcp;
 
 import java.io.IOException;
 import java.io.InputStream;
