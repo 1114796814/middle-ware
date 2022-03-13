@@ -1,0 +1,5 @@
+.idea
+.property
+target
+~$*
+*.iml
