@@ -10,9 +10,9 @@ import xmu.edu.cn.group.ConsumerGroup;
  */
 public class UserGroup2 {
     public static void main(String[] args) throws MQClientException {
-        new Thread(new Producer("101.132.164.244:9876", "producer2",
+        new Thread(new Producer("usergroup2","101.132.164.244:9876", "producer2",
                 "sayHello1")).start();
-        new ConsumerGroup("101.132.164.244:9876", "consumer1",
+        new ConsumerGroup("usergroup2","101.132.164.244:9876", "consumer1",
                 "sayHello1");
     }
 }

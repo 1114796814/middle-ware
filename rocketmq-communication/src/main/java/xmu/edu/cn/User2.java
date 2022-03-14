@@ -8,9 +8,9 @@ import org.apache.rocketmq.client.exception.MQClientException;
  */
 public class User2 {
     public static void main(String[] args) throws MQClientException {
-        new Thread(new Producer("101.132.164.244:9876", "producer2",
+        new Thread(new Producer("user2","101.132.164.244:9876", "producer2",
                 "sayHello1")).start();
-        new Consumer("101.132.164.244:9876", "consumer2",
+        new Consumer("user2","101.132.164.244:9876", "consumer2",
                 "sayHello2");
     }
 }
