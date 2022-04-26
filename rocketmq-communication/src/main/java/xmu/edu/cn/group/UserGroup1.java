@@ -1,8 +1,6 @@
 package xmu.edu.cn.group;
 
 import org.apache.rocketmq.client.exception.MQClientException;
-import xmu.edu.cn.Producer;
-import xmu.edu.cn.group.ConsumerGroup;
 
 /**
  * @author xiuchen lang 22920192204222
@@ -10,9 +8,9 @@ import xmu.edu.cn.group.ConsumerGroup;
  */
 public class UserGroup1 {
     public static void main(String[] args) throws MQClientException {
-        new Thread(new Producer("usergroup1","101.132.164.244:9876", "producer2",
-                "sayHello1")).start();
-        new ConsumerGroup("usergroup1","101.132.164.244:9876", "consumer1",
+        new Thread(new Producer("高艺桐","101.132.164.244:9876", "producer2",
+                "sayHello1","zh_cn")).start();
+        new ConsumerGroup("高艺桐","101.132.164.244:9876", "consumer1",
                 "sayHello1");
     }
 }

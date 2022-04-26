@@ -49,7 +49,7 @@ public class ConsumerGroup {
                     }
                     String getname = getmsg.getName();
                     if (!getname.equals(name)) {
-                        System.out.println(new Date() +"用户 "+ getname + "  :" + getmsg.getMsg());
+                        System.out.println(new Date() +" "+ getname + "  :" + getmsg.getMsg());
                     }
                 }
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;

@@ -1,4 +1,4 @@
-package xmu.edu.cn;
+package xmu.edu.cn.group;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.JacksonFeature;
@@ -9,6 +9,8 @@ import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.jsoup.Jsoup;
+import xmu.edu.cn.GT;
 import xmu.edu.cn.po.Msg;
 
 import java.nio.charset.StandardCharsets;
@@ -26,12 +28,16 @@ public class Producer implements Runnable {
     public String producerGroup;
     public String toTopic;
     public String name;
+    public GT gt;
+    public String toTransalateLange;
 
-    public Producer(String name,String nameSrvAddr, String producerGroup, String toTopic) {
+    public Producer(String name,String nameSrvAddr, String producerGroup, String toTopic,String toTransalateLange) {
+        gt = GT.getInstance();
         this.name = name;
         this.nameSrvAddr = nameSrvAddr;
         this.producerGroup = producerGroup;
         this.toTopic = toTopic;
+        this.toTransalateLange = toTransalateLange;
         producer = new DefaultMQProducer(producerGroup);
         producer.setNamesrvAddr(nameSrvAddr);
         try {
@@ -45,10 +51,12 @@ public class Producer implements Runnable {
     public void run() {
         Scanner sc = new Scanner(System.in);
         while (true) {
-            String string = sc.next();
+            String string = sc.nextLine();
+            String auto = null;
             try {
-                string = objectMapper.writeValueAsString(new Msg(this.name, string));
-            } catch (JsonProcessingException e) {
+                auto = gt.translateText(string, "auto", this.toTransalateLange);
+                string = objectMapper.writeValueAsString(new Msg(this.name, auto));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             if (string != null) {
