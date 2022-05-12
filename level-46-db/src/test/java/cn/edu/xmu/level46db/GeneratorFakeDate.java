@@ -1,8 +1,7 @@
 package cn.edu.xmu.level46db;
 
-import cn.edu.xmu.level46db.dao.Level46dbDAO;
+import cn.edu.xmu.level46db.dao.Level46dbDao;
 import cn.edu.xmu.level46db.model.bo.User;
-import cn.edu.xmu.level46db.model.po.UserPo;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import java.util.Locale;
 @SpringBootTest
 public class GeneratorFakeDate {
     @Autowired
-    Level46dbDAO level46dbDAO;
+    Level46dbDao level46dbDAO;
     @Test
     public void generate(){
         Faker faker = new Faker(Locale.CHINA,new SecureRandom());

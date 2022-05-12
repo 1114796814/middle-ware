@@ -1,6 +1,6 @@
 package cn.edu.xmu.level46db.service;
 
-import cn.edu.xmu.level46db.dao.Level46dbDAO;
+import cn.edu.xmu.level46db.dao.Level46dbDao;
 import cn.edu.xmu.level46db.model.vo.LoginVo;
 import cn.edu.xmu.level46db.model.bo.User;
 import cn.edu.xmu.level46db.util.ReturnObject;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class Level46dbService {
 
     @Autowired
-    Level46dbDAO level46dbDAO;
+    Level46dbDao level46dbDAO;
 
     @Transactional(readOnly = true)
     public ReturnObject login(LoginVo loginVo) {
@@ -24,9 +24,32 @@ public class Level46dbService {
         return level46dbDAO.login(user);
     }
 
+//    /**
+//     * 悲观锁
+//     * @param type
+//     * @param year
+//     * @param month
+//     * @return
+//     */
+//    public synchronized ReturnObject rush(Long id) {
+//        return transactionalRush(id);
+//    }
+//
+//    @Transactional
+//    public ReturnObject transactionalRush(Long id) {
+//        return level46dbDAO.rush(id);
+//    }
 
-    @Transactional
-    public ReturnObject rush(Byte type, Integer year, Integer month) {
-        return level46dbDAO.rush(type, year, month);
+    /**
+//     * 乐观锁
+//     * @return
+//     */
+//    public  ReturnObject rush(Long id) {
+//        return level46dbDAO.rushByOptimistic(id);
+//    }
+
+
+    public ReturnObject rush(Long id) {
+        return level46dbDAO.rushByOptimisticAndRedis(id);
     }
 }

@@ -1,6 +1,6 @@
 package cn.edu.xmu.level46db;
 
-import cn.edu.xmu.level46db.dao.Level46dbDAO;
+import cn.edu.xmu.level46db.dao.Level46dbDao;
 import cn.edu.xmu.level46db.util.ReturnObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class Level46DbApplicationTest {
     @Autowired
-    Level46dbDAO level46dbDAO;
+    Level46dbDao level46dbDAO;
     @Test
     public void test(){
         ReturnObject userByIdCard = level46dbDAO.getUserByIdCard("1111");
