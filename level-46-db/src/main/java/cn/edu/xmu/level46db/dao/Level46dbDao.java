@@ -8,7 +8,9 @@ import cn.edu.xmu.level46db.model.po.*;
 import cn.edu.xmu.level46db.model.bo.User;
 import cn.edu.xmu.level46db.util.ReturnNo;
 import cn.edu.xmu.level46db.util.ReturnObject;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -30,14 +32,18 @@ public class Level46dbDao {
     CETPoMapper cetPoMapper;
 
     @Autowired
+    CETOrderInfoPoMapper cetOrderInfoPoMapper;
+
+    @Autowired
     RedisTemplate redisTemplate;
 
+    @Autowired
+    RocketMQTemplate rocketMQTemplate;
 
     @Autowired
     ExtendCETPoMapper extendCETPoMapper;
 
-    @Autowired
-    CETOrderInfoPoMapper cetOrderInfoPoMapper;
+
     @Autowired
     AsyncDao asyncDao;
 
@@ -47,6 +53,13 @@ public class Level46dbDao {
 
     String USER_INFO = "u_%s";
     String CET_INFO = "cet_%s";
+
+
+    @Value("${cet.insertorderinfo}")
+    String INSERT_ORDER_INFO;
+    @Value("${cet.decrcettablebyid}")
+    String DECR_CET_TABLE_BY_ID;
+
 
     public ReturnObject insertUser(User user) {
         UserPo userPo = user.generatePo();
@@ -181,9 +194,16 @@ public class Level46dbDao {
                     concurrentHashMap.put(key, true);
                     return new ReturnObject(ReturnNo.NOT_ENOUGH);
                 } else {
-                    //TODO 插入抢的情况 并扣除数据库
-                    asyncDao.insertCETOrderTable(id);
-                    asyncDao.decrCETtableById(id);
+
+                    //异步插入情况
+                    //asyncDao.insertCETOrderTable(id);
+                    //asyncDao.decrCETtableById(id);
+                    // TODO:rocketmq
+//                    String json = JacksonUtil.toJson(orderAndOrderItemsVo);
+//                    Message message = MessageBuilder.withPayload(json).build();
+                    //发消息
+                    rocketMQTemplate.sendOneWay(DECR_CET_TABLE_BY_ID, id);
+                    rocketMQTemplate.sendOneWay(INSERT_ORDER_INFO, id);
                     return new ReturnObject(ReturnNo.OK);
                 }
             }
@@ -191,6 +211,7 @@ public class Level46dbDao {
             return new ReturnObject(ReturnNo.INTERNAL_SERVER_ERR, e.getMessage());
         }
     }
+
 
     public boolean set(String key, String value, long timeout) {
         if (timeout <= 0) {
