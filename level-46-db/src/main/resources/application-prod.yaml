@@ -42,7 +42,27 @@ mybatis:
   #mapper.xml所在的位置
   mapper-locations: classpath*:cn.edu.xmu.level46db.mapper/*.xml
 
+rocketmq:
+  # 指定namesrv地址
+  name-server: rmqnamesrv:9876
+  producer:
+    #生产者group名称
+    group: cet_group_producer
+    #一次发送多少数量消息
+    max-message-size: 4096
+    #发送消息超时时间,默认3000
+    send-message-timeout: 30000
+    #发送消息失败重试次数，默认2
+    retry-times-when-send-async-failed: 2
+  consumer:
+    group: cet-group-consumer
 
+
+#Rocketmq
+cet:
+  expiretime: 10000
+  insertorderinfo: insert-order
+  decrcettablebyid: decr-cet-table
 
 # 线程池配置
 async-pool:
